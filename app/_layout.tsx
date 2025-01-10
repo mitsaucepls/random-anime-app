@@ -3,7 +3,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 export default function TabLayout() {
   return (
-    <Tabs initialRoutName= "home">
+    <Tabs initialRouteName="home">
       <Tabs.Screen
         name="game"
         options={{
