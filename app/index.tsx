@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View } from 'react-native';
 import ReactLive2d from '../CubismWebSamples/Samples/TypeScript/Demo/src/index.js';
 // import { useEffect, useState } from "react";
 import { WebView } from 'react-native-webview';
@@ -6,7 +6,7 @@ import ReactDOMServer from 'react-dom/server';
 
 const AnimeModel: React.FC = () => {
   return (
-   <div
+    <div
       style={{
         display: 'flex',
         justifyContent: 'center',
@@ -21,15 +21,18 @@ const AnimeModel: React.FC = () => {
         bottom={'10px'}
         right={'10px'}
         ModelList={['Haru', 'Hiyori']}
-        TouchBody={['啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊你要干嘛', '哼', '坏人']}
+        TouchBody={[
+          '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊你要干嘛',
+          '哼',
+          '坏人',
+        ]}
       />
     </div>
   );
 };
 
-
 export default function Index() {
-  const htmlContent = ReactDOMServer.renderToString(<AnimeModel />)
+  const htmlContent = ReactDOMServer.renderToString(<AnimeModel />);
   const htmlTemplate = `
     <!DOCTYPE html>
     <html>
@@ -44,12 +47,7 @@ export default function Index() {
       </body>
     </html>
   `;
-  return (
-    <WebView
-      originWhitelist={['*']}
-      source={{ html: htmlTemplate }}
-    />
-  );
+  return <WebView originWhitelist={['*']} source={{ html: htmlTemplate }} />;
 }
 //   const [release,setRelease] = useState(false)
 
