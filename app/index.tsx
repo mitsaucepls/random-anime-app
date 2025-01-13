@@ -5,7 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 export default () => {
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
+      <SafeAreaView className='flex-1'>
         <Text className="bg-blue-700">AnimeModel</Text>
         {Platform.OS !== 'web' ? (
           <AnimeModel />
