@@ -3,6 +3,7 @@ import ReactLive2d from '../CubismWebSamples/Samples/TypeScript/Demo/src/index.j
 // import { useEffect, useState } from "react";
 import { WebView } from 'react-native-webview';
 import ReactDOMServer from 'react-dom/server';
+import '../global.css'
 
 const AnimeModel: React.FC = () => {
   return (
