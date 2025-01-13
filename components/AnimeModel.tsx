@@ -1,7 +1,7 @@
-import WebView from "react-native-webview";
+import WebView from 'react-native-webview';
 
 const AnimeModel: React.FC = () => {
-    const htmlTemplate = `
+  const htmlTemplate = `
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,9 +19,13 @@ const AnimeModel: React.FC = () => {
 </html>
   `;
 
-    return (
-        <WebView originWhitelist={['*']} source={{ html: htmlTemplate, baseUrl: 'http://localhost' }} webviewDebuggingEnabled />
-    );
+  return (
+    <WebView
+      originWhitelist={['*']}
+      source={{ html: htmlTemplate, baseUrl: 'http://localhost' }}
+      webviewDebuggingEnabled
+    />
+  );
 };
 
 export default AnimeModel;
