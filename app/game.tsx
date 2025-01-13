@@ -1,15 +1,9 @@
-import { Text, View } from "react-native";
+import { Text, View } from 'react-native';
 
 export default function Game() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/game.tsx to edit this screen.</Text>
+    <View>
+      <Text className='text-9xl'>Edit app/game.tsx to edit this screen.</Text>
     </View>
   );
 }

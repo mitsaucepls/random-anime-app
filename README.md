@@ -35,46 +35,52 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
+## Run Eslint with prettier
 
-## Get a Android emulator (Archlinux)
+   ```bash
+  npx eslint . --fix
+   ```
+
+## Get a Android emulator (Archlinux - cringe)
 
 1. Install dependencies
 
-    ```bash
-    yay -S android-sdk-cmdline-tools-latest android-sdk-build-tools android-sdk-platform-tools android-platform android-emulator
-    ```
+   ```bash
+   yay -S android-sdk-cmdline-tools-latest android-sdk-build-tools android-sdk-platform-tools android-platform android-emulator
+   ```
+
 2. Make /opt/android-sdk group-writeable
 
-    ```bash
-    sudo groupadd android-sdk
-    sudo gpasswd -a <user> android-sdk
-    sudo setfacl -R -m g:android-sdk:rwx /opt/android-sdk
-    sudo setfacl -d -m g:android-sdk:rwX /opt/android-sdk
-    ```
+   ```bash
+   sudo groupadd android-sdk
+   sudo gpasswd -a <user> android-sdk
+   sudo setfacl -R -m g:android-sdk:rwx /opt/android-sdk
+   sudo setfacl -d -m g:android-sdk:rwX /opt/android-sdk
+   ```
 
 3. Install system image
 
-    ```bash
-    sdkmanager --install 'system-images;android-35;google_apis;x86_64'
-    ```
+   ```bash
+   sdkmanager --install 'system-images;android-35;google_apis;x86_64'
+   ```
 
 4. Set ANDROID_SDK_HOME
 
-    ```bash
-    export ANDROID_SDK_HOME="$HOME/.config"
-    ```
+   ```bash
+   export ANDROID_SDK_HOME="$HOME/.config"
+   ```
 
 5. Create AVD
 
-    ```bash
-    avdmanager create avd -k 'system-images;android-35;google_apis;x86_64' -d 41 -n <name>
-    ```
+   ```bash
+   avdmanager create avd -k 'system-images;android-35;google_apis;x86_64' -d 41 -n <name>
+   ```
 
 6. Start AVD
 
-    ```bash
-    emulator @<name>
-    ```
+   ```bash
+   emulator @<name>
+   ```
 
 ## Learn more
 
