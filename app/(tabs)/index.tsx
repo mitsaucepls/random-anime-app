@@ -1,18 +1,20 @@
 import AnimeModel from '@/components/AnimeModel';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Platform, SafeAreaView, Text } from 'react-native';
-import '@/global.css'
+import { Platform, SafeAreaView } from 'react-native';
+import '@/global.css';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function Index() {
   const colorScheme = useColorScheme();
   return (
-    <SafeAreaView className="flex-1">
-      <Text className="bg-blue-700">{colorScheme}</Text>
+    <SafeAreaView style={{ flex: 1 }}>
       {Platform.OS !== 'web' ? (
         <AnimeModel />
       ) : (
-        <Text className="text-red-500 text-9xl">Model not supported</Text>
+        <ThemedText darkColor="red" lightColor="red" className="text-9xl">
+          Model not supported
+        </ThemedText>
       )}
     </SafeAreaView>
   );
-};
+}

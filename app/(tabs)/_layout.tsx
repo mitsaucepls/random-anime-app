@@ -24,26 +24,33 @@ export default function TabLayout() {
           default: {},
         }),
         tabBarShowLabel: false,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="game"
         options={{
           title: 'Game',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="gamepad" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="gamepad" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="home" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="chat"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="comment" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome size={28} name="comment" color={color} />
+          ),
         }}
       />
     </Tabs>

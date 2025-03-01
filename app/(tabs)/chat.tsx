@@ -1,15 +1,16 @@
-import { Text, View } from 'react-native';
+import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/ThemedView';
 
 export default function Chat() {
   return (
-    <View
+    <ThemedView
       style={{
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <Text>Edit app/chat.tsx to edit this screen.</Text>
-    </View>
+      <ThemedText>Edit app/chat.tsx to edit this screen.</ThemedText>
+    </ThemedView>
   );
 }
