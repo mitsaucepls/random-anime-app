@@ -1,6 +1,8 @@
+import { useColorScheme } from '@/hooks/useColorScheme';
 import WebView from 'react-native-webview';
 
 const AnimeModel: React.FC = () => {
+  const colorScheme = useColorScheme();
   const htmlTemplate = `
 <!DOCTYPE html>
 <html>
@@ -23,6 +25,7 @@ const AnimeModel: React.FC = () => {
     <WebView
       originWhitelist={['*']}
       source={{ html: htmlTemplate, baseUrl: 'http://localhost' }}
+      style={{ backgroundColor: colorScheme }}
       webviewDebuggingEnabled
     />
   );
