@@ -1,6 +1,6 @@
 {
   "name": "random-anime-app",
-  "main": "expo-router/entry",
+  "main": "./index",
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
@@ -15,7 +15,6 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@expo/vector-icons": "^14.0.4",
     "@flyerhq/react-native-chat-ui": "^1.4.3",
     "@fugood/transformers": "^3.3.3-beta.1",
@@ -44,10 +43,13 @@
     "react-native-safe-area-context": "4.12.0",
     "react-native-screens": "~4.4.0",
     "react-native-web": "^0.19.13",
-    "react-native-webview": "13.12.5"
+    "react-native-webview": "13.12.5",
+    "text-encoding-polyfill": "^0.6.7",
+    "xregexp": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.26.9",
+    "@babel/plugin-proposal-export-namespace-from": "^7.18.9",
     "@types/jest": "^29.5.14",
     "@types/react": "~18.3.12",
     "@types/react-dom": "^18.3.5",
