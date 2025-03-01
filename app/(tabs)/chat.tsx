@@ -1,57 +1,145 @@
-import { Chat, MessageType } from '@flyerhq/react-native-chat-ui';
-import { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ */
 
-const uuidv4 = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = Math.floor(Math.random() * 16);
-    const v = c === 'x' ? r : (r % 4) + 8;
-    return v.toString(16);
-  });
-};
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { pipeline } from '@fugood/transformers';
+import InlineSection from '@/components/form/InlineSection';
+import Section from '@/components/form/Section';
+import SelectField from '@/components/form/SelectField';
+import Progress from '@/components/Progress';
+import Models from '@/components/models';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '@/constants/Colors';
 
-export default function ChatTab() {
-  const [messages, setMessages] = useState<MessageType.Any[]>([]);
-  const user = { id: '4ef191a5-f44f-4092-9441-ad27ed6be102' };
-  const llm = { id: '6424fce9-e442-4c60-9ba7-5c8610729334' };
+export default function App(): React.JSX.Element {
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === 'dark';
+  const backgroundColor = Colors[colorScheme ?? 'light'].background;
+  const textColor = Colors[colorScheme ?? 'light'].text;
 
-  const addMessage = (message: MessageType.Any) => {
-    setMessages([message, ...messages]);
-  };
+  const [task, setTask] = useState<string | null>(null);
+  const [settings, setSettings] = useState<object>({});
+  const [params, setParams] = useState<object | null>(null);
+  const [download, setDownload] = useState<object>({});
+  const [isLoading, setLoading] = useState<boolean>(false);
 
-  const handleSendPress = async(message: MessageType.PartialText) => {
-    const textMessage: MessageType.Text = {
-      author: user,
-      createdAt: Date.now(),
-      id: uuidv4(),
-      text: message.text,
-      type: 'text',
-    };
-    // addMessage(textMessage);
+  const backgroundStyle = { backgroundColor };
 
-    const replyMessage: MessageType.Text = {
-      author: llm,
-      createdAt: Date.now(),
-      id: uuidv4(),
-      text: '...',
-      type: 'text',
-    };
-    setMessages([replyMessage, textMessage, ...messages]);
+  useEffect(() => {
+    setDownload({});
+    setLoading(false);
+  }, [task]);
 
-    const updateReplyMessage = (done: boolean, delta: string) => {
-      if (!done) {
-        replyMessage.text = delta
-        setMessages((previousMessages) => { previousMessages[0] = replyMessage; return [...previousMessages]; })
-      }
-    };
+  const onProgress  = useCallback((event: any) => {
+    if (event?.file) {
+      const { file, status, progress } = event;
+      setLoading(true);
+      setDownload((prev) => ({
+        ...prev,
+        [file]: { status, progress },
+      }));
+    }
+    if (event?.status === 'ready') {
+      setLoading(false);
+    }
+  }, []);
 
-    // replyMessage.text = response;
-    setMessages((previousMessages) => { previousMessages[0] = replyMessage; return [...previousMessages]; })
-  };
+  const run = useCallback(async (useTask: string, model: string, modelOpt: object, ...args: any[]) => {
+    if (!task || !useTask || !args?.length) return;
+    let pipe;
+    try {
+      pipe = await pipeline(useTask, model, { ...modelOpt, progress_callback: onProgress });
+      const result = await pipe._call(...args);
+      await pipe.dispose();
+      return result;
+    } catch (e) {
+      console.error(e.stack);
+      await pipe?.dispose();
+      throw e;
+    }
+  }, [task, onProgress]);
+
+  const SettingsComponent = Models[task]?.Settings;
+  const ParametersComponent = Models[task]?.Parameters;
+  const InteractComponent = Models[task]?.Interact;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Chat messages={messages} onSendPress={handleSendPress} user={user} />
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundColor}
+      />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <View style={styles.container}>
+          <Text style={[styles.title, textColor]}># transformers.js</Text>
+          <InlineSection title="Task">
+            <SelectField
+              options={Object.entries(Models).map(([key, value]) => ({
+                label: value.title,
+                value: key,
+              }))}
+              value={task}
+              onChange={(value) => setTask(value)}
+              placeholder="Select a task"
+            />
+          </InlineSection>
+          <InlineSection title="Settings">
+            {SettingsComponent ? (
+              <SettingsComponent onChange={setSettings} />
+            ) : (
+              <Text style={textColor}>Select task first</Text>
+            )}
+          </InlineSection>
+          <InlineSection title="Parameters">
+            {ParametersComponent ? (
+              <ParametersComponent onChange={setParams} />
+            ) : (
+              <Text style={textColor}>N/A</Text>
+            )}
+          </InlineSection>
+          <Section title="Interact">
+            {InteractComponent ? (
+              <InteractComponent settings={settings} params={params} runPipe={run} />
+            ) : (
+              <Text style={textColor}>N/A</Text>
+            )}
+          </Section>
+          {isLoading && (
+            <Section title="Progress">
+              {Object.entries(download).map(([key, { progress, status }]) => (
+                <Progress key={key} title={key} value={progress} status={status} />
+              ))}
+            </Section>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  container: {
+    flex: 1,
+    paddingTop: 20,
+    paddingBottom: 80,
+  },
+});

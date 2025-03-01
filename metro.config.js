@@ -1,7 +1,18 @@
 // Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeWind } = require('nativewind/metro');
+const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
 
 const config = getDefaultConfig(__dirname);
 
-module.exports = withNativeWind(config, { input: './global.css' });
+config.resolver.assetExts.push("node");
+config.resolver.sourceExts = [...config.resolver.sourceExts, "cjs"];
+// Exclude unsupported dynamic imports
+config.resolver.blacklistRE = /onnxruntime-node|react-dom\/server\.node|sharp/;
+config.transformer = {
+  ...config.transformer,
+  unstable_allowRequireContext: true,
+};
+
+
+module.exports = wrapWithReanimatedMetroConfig(withNativeWind(config, { input: './global.css' }));
