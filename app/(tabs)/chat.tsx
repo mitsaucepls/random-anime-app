@@ -11,10 +11,9 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
-import { pipeline } from '@fugood/transformers';
+import { pipeline, PipelineType } from '@fugood/transformers';
 import InlineSection from '@/components/form/InlineSection';
 import Section from '@/components/form/Section';
 import SelectField from '@/components/form/SelectField';
@@ -22,12 +21,12 @@ import Progress from '@/components/Progress';
 import Models from '@/components/models';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Colors } from '@/constants/Colors';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function App(): React.JSX.Element {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === 'dark';
   const backgroundColor = Colors[colorScheme ?? 'light'].background;
-  const textColor = Colors[colorScheme ?? 'light'].text;
 
   const [task, setTask] = useState<string | null>(null);
   const [settings, setSettings] = useState<object>({});
@@ -56,7 +55,7 @@ export default function App(): React.JSX.Element {
     }
   }, []);
 
-  const run = useCallback(async (useTask: string, model: string, modelOpt: object, ...args: any[]) => {
+  const run = useCallback(async (useTask: PipelineType, model: string, modelOpt: object, ...args: any[]) => {
     if (!task || !useTask || !args?.length) return;
     let pipe;
     try {
@@ -85,7 +84,7 @@ export default function App(): React.JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
         <View style={styles.container}>
-          <Text style={[styles.title, textColor]}># transformers.js</Text>
+          <ThemedText type='title'># transformers.js</ThemedText>
           <InlineSection title="Task">
             <SelectField
               options={Object.entries(Models).map(([key, value]) => ({
@@ -101,21 +100,21 @@ export default function App(): React.JSX.Element {
             {SettingsComponent ? (
               <SettingsComponent onChange={setSettings} />
             ) : (
-              <Text style={textColor}>Select task first</Text>
+              <ThemedText>Select task first</ThemedText>
             )}
           </InlineSection>
           <InlineSection title="Parameters">
             {ParametersComponent ? (
               <ParametersComponent onChange={setParams} />
             ) : (
-              <Text style={textColor}>N/A</Text>
+              <ThemedText>N/A</ThemedText>
             )}
           </InlineSection>
           <Section title="Interact">
             {InteractComponent ? (
               <InteractComponent settings={settings} params={params} runPipe={run} />
             ) : (
-              <Text style={textColor}>N/A</Text>
+              <ThemedText>N/A</ThemedText>
             )}
           </Section>
           {isLoading && (
