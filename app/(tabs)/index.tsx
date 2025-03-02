@@ -1,11 +1,16 @@
 import AnimeModel from '@/components/AnimeModel';
-import { Platform, SafeAreaView } from 'react-native';
+import { Platform } from 'react-native';
 import '@/global.css';
 import { ThemedText } from '@/components/ThemedText';
+import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 
 export default function Index() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <ThemedSafeAreaView
+      style={{
+        flex: 1,
+      }}
+    >
       {Platform.OS !== 'web' ? (
         <AnimeModel />
       ) : (
@@ -13,6 +18,6 @@ export default function Index() {
           Model not supported
         </ThemedText>
       )}
-    </SafeAreaView>
+    </ThemedSafeAreaView>
   );
 }

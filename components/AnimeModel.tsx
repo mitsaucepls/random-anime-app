@@ -1,13 +1,14 @@
-import { useColorScheme } from '@/hooks/useColorScheme';
-import WebView from 'react-native-webview';
+import { WebView, type WebViewProps } from 'react-native-webview';
 
-const AnimeModel: React.FC = () => {
-  const colorScheme = useColorScheme();
+export default function AnimeModel({
+  style,
+  ...otherProps
+}: WebViewProps) {
   const htmlTemplate = `
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=0.8">
         <script src="https://fastly.jsdelivr.net/gh/samunatsu/live2d-widget-enhanced@latest/dist/core.min.js"></script>
         <script>
             l2dwe.init({
@@ -25,10 +26,9 @@ const AnimeModel: React.FC = () => {
     <WebView
       originWhitelist={['*']}
       source={{ html: htmlTemplate, baseUrl: 'http://localhost' }}
-      style={{ backgroundColor: colorScheme }}
       webviewDebuggingEnabled
+      style={[{ backgroundColor: 'transparent' }, style]}
+      {...otherProps}
     />
   );
 };
-
-export default AnimeModel;
