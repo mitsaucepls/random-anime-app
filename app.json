@@ -6,14 +6,12 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "userInterfaceStyle": "dark",
       "supportsTablet": true
     },
     "android": {
-      "userInterfaceStyle": "dark",
       "package": "com.anonymous.randomanimeapp"
     },
     "web": {
