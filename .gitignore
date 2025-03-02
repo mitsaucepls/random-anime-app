@@ -41,5 +41,5 @@ yarn-error.*
 app-example
 
 # prebuild
-ios/
-android/
+/ios
+/android
