@@ -1,9 +1,6 @@
 import { WebView, type WebViewProps } from 'react-native-webview';
 
-export default function AnimeModel({
-  style,
-  ...otherProps
-}: WebViewProps) {
+export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
   const htmlTemplate = `
 <!DOCTYPE html>
 <html>
@@ -31,4 +28,4 @@ export default function AnimeModel({
       {...otherProps}
     />
   );
-};
+}
