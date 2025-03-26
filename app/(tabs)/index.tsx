@@ -9,7 +9,7 @@ export default function Index() {
       {Platform.OS !== 'web' ? (
         <AnimeModel />
       ) : (
-        <Text className="text-9xl">Model not supported</Text>
+        <Text className="text-9xl text-red-500">Model not supported</Text>
       )}
     </SafeAreaView>
   );

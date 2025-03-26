@@ -7,6 +7,7 @@ export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Random Anime App</title>
         <meta name="viewport" content="width=device-width, initial-scale=0.8">
         <script src="https://fastly.jsdelivr.net/gh/samunatsu/live2d-widget-enhanced/dist/core.min.js"></script>
         <script>
@@ -26,7 +27,7 @@ export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
       originWhitelist={['*']}
       source={{ html: htmlTemplate, baseUrl: 'http://localhost' }}
       webviewDebuggingEnabled
-      style={[{ backgroundColor: 'transparent' }, style]}
+      style={[{ backgroundColor: 'transparent' }, { marginBottom: 10 }, style]}
       {...otherProps}
     />
   );
