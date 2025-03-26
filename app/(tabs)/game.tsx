@@ -1,16 +1,11 @@
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { Text } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import '@/global.css';
 
 export default function Game() {
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <ThemedText>Edit app/game.tsx to edit this screen.</ThemedText>
-    </ThemedView>
+    <SafeAreaView className="flex-1 items-center">
+      <Text>Edit app/game.tsx to edit this screen.</Text>
+    </SafeAreaView>
   );
 }

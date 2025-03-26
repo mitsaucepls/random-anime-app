@@ -1,16 +1,11 @@
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { SafeAreaView } from 'react-native';
+import { Text } from 'react-native-paper';
+import '@/global.css';
 
 export default function Chat() {
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <ThemedText>Edit app/chat.tsx to edit this screen.</ThemedText>
-    </ThemedView>
+    <SafeAreaView className="flex-1 items-center">
+      <Text>Edit app/chat.tsx to edit this screen.</Text>
+    </SafeAreaView>
   );
 }
