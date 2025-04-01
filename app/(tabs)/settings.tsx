@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 export default function Settings() {
-  const { resource, setResource, api, setApi } = useSettingsStore(
+  const { resource, setResource, api, setApi, llm_url, setLLMURL, model, setModel } = useSettingsStore(
     (state) => state,
   );
 
@@ -23,6 +23,18 @@ export default function Settings() {
           label="Resource"
           value={resource}
           onChangeText={(resource) => setResource(resource)}
+        />
+        <TextInput
+          placeholder="http://10.0.2.2:11434"
+          label="LLM Backend URL"
+          value={llm_url}
+          onChangeText={(llm_url) => setLLMURL(llm_url)}
+        />
+        <TextInput
+          placeholder="wizard-vicuna-uncensored:30b"
+          label="Model of your Backend"
+          value={model}
+          onChangeText={(model) => setModel(model)}
         />
       </View>
     </SafeAreaView>
