@@ -16,6 +16,13 @@ export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
                 resource: 'https://fastly.jsdelivr.net/gh/${resource}/dist',
             });
         </script>
+        <style>
+            #waifu-tips,
+            #waifu-tips.waifu-tips-active,
+            #waifu-tips span {
+                display: none !important;
+            }
+        </style>
     </head>
     <body>
     </body>
