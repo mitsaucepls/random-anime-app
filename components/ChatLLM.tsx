@@ -2,35 +2,46 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
   FlatList,
   SafeAreaView,
 } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import { useSettingsStore } from '@/stores/SettingsStore';
 
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'bot';
+  sender: 'user' | 'assistance';
 }
 
 const ChatLLM: React.FC = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const { llm_url, model } = useSettingsStore((state) => state);
+  const { llm_url, model, system_prompt } = useSettingsStore((state) => state);
 
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    // Add user message to chat
+    // Create the new user message
     const userMessage: Message = {
       id: Date.now().toString(),
       text: input,
       sender: 'user',
     };
-    setMessages(prev => [...prev, userMessage]);
+
+    // Update the conversation history
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+
+    // Build the context history including a system prompt
+    const contextHistory = [
+      { role: "system", content: system_prompt },
+      ...updatedMessages.map(message => ({
+        role: message.sender === 'user' ? 'user' : 'assistance',
+        content: message.text,
+      }))
+    ];
 
     try {
       const response = await fetch(llm_url + '/v1/chat/completions', {
@@ -40,18 +51,18 @@ const ChatLLM: React.FC = () => {
         },
         body: JSON.stringify({
           model: model,
-          messages: [{ role: "user", content: input }],
-          stream: false
+          messages: contextHistory,
+          stream: false,
         }),
       });
 
       const data = await response.json();
 
-      // Correct parsing of Ollama native API response
+      // Parse the response to extract the assistant's message
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: data.choices[0].message.content || 'No response received.',
-        sender: 'bot',
+        sender: 'assistance',
       };
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
@@ -59,7 +70,7 @@ const ChatLLM: React.FC = () => {
       const errorMessage: Message = {
         id: (Date.now() + 2).toString(),
         text: 'Error communicating with the LLM.',
-        sender: 'bot',
+        sender: 'assistance',
       };
       setMessages(prev => [...prev, errorMessage]);
     }
@@ -86,7 +97,9 @@ const ChatLLM: React.FC = () => {
           value={input}
           onChangeText={setInput}
         />
-        <Button title="Send" onPress={sendMessage} />
+        <Button onPress={sendMessage}>
+          Send
+        </Button>
       </View>
     </SafeAreaView>
   );

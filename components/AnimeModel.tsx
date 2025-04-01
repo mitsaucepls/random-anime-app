@@ -1,8 +1,12 @@
 import { useSettingsStore } from '@/stores/SettingsStore';
 import { WebView, type WebViewProps } from 'react-native-webview';
 
-export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
-  const { resource, api } = useSettingsStore((state) => state);
+interface AnimeModelProps extends WebViewProps {
+  onToggleChat: () => void;
+}
+
+export default function AnimeModel({ style, onToggleChat, ...otherProps }: AnimeModelProps) {
+  const { api } = useSettingsStore((state) => state);
   const htmlTemplate = `
 <!DOCTYPE html>
 <html>
@@ -13,7 +17,7 @@ export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
         <script>
             l2dwe.init({
                 api: new l2dwe.RemoteCdn('https://fastly.jsdelivr.net/gh/${api}'),
-                resource: 'https://fastly.jsdelivr.net/gh/${resource}/dist',
+                resource: 'https://fastly.jsdelivr.net/gh/SamuNatsu/live2d-widget-enhanced/dist',
             });
         </script>
         <style>
@@ -98,11 +102,31 @@ export default function AnimeModel({ style, ...otherProps }: WebViewProps) {
 </html>
   `;
 
+  const runFirst = `
+    const waifuTool = document.getElementById('waifu-tool-hitokoto');
+    if (waifuTool) {
+      waifuTool.addEventListener('click', () => {
+        window.ReactNativeWebView.postMessage("tool clicked")
+      });
+    }
+    true;
+  `;
+
   return (
     <WebView
       originWhitelist={['*']}
       source={{ html: htmlTemplate, baseUrl: 'http://localhost' }}
+      onMessage={(event) => {
+        if (event.nativeEvent.data === "tool clicked") {
+          if (typeof onToggleChat === "function") {
+            onToggleChat();
+          } else {
+            console.warn("onToggleChat is not a function");
+          }
+        }
+      }}
       webviewDebuggingEnabled
+      injectedJavaScript={runFirst}
       style={[
         { backgroundColor: 'transparent', marginBottom: 10 },
         style,
